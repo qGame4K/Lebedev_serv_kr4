@@ -30,6 +30,5 @@ def test_delete_user_sync():
     response = client.delete(f"/users/{user_id}")
     assert response.status_code == 204
     
-    # Проверка, что пользователь действительно удален
     response_check = client.get(f"/users/{user_id}")
     assert response_check.status_code == 404

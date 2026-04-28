@@ -8,14 +8,12 @@ fake = Faker() # [cite: 134, 135]
 
 @pytest_asyncio.fixture(autouse=True)
 async def clear_db():
-    # Изоляция состояния [cite: 136, 137]
     db.clear()
     yield
     db.clear()
 
 @pytest_asyncio.fixture
 async def async_client():
-    # Настройка клиента без реального сервера [cite: 132, 133]
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client
@@ -29,7 +27,7 @@ async def test_create_user_async(async_client):
 
 @pytest.mark.asyncio
 async def test_get_existing_user(async_client):
-    data = {"username": fake.name(), "age": 25}
+    data = {"username": fake.name(), "age": 26}
     create_res = await async_client.post("/users", json=data)
     user_id = create_res.json()["id"]
 

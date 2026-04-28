@@ -4,12 +4,11 @@ from pydantic import BaseModel
 
 app = FastAPI(title="Task 10.1: Custom Exceptions")
 
-# Модели реагирования на ошибки [cite: 42]
+
 class ErrorResponseModel(BaseModel):
     error_type: str
     message: str
 
-# Пользовательские классы исключений [cite: 39]
 class CustomExceptionA(Exception):
     def __init__(self, message: str):
         self.message = message
@@ -18,7 +17,6 @@ class CustomExceptionB(Exception):
     def __init__(self, message: str):
         self.message = message
 
-# Обработчики исключений [cite: 41]
 @app.exception_handler(CustomExceptionA)
 async def custom_exception_a_handler(request: Request, exc: CustomExceptionA):
     return JSONResponse(
@@ -33,7 +31,6 @@ async def custom_exception_b_handler(request: Request, exc: CustomExceptionB):
         content=ErrorResponseModel(error_type="Not Found Error", message=exc.message).model_dump()
     )
 
-# Конечные точки (Endpoints) [cite: 43]
 @app.get("/check-condition")
 async def trigger_exception_a(is_valid: bool = False):
     if not is_valid:
